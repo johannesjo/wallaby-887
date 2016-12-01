@@ -7,6 +7,11 @@
 const webpackConfigTest = require('./dev/config/webpack.config.test');
 const wallabyWebpack = require('wallaby-webpack');
 const wallabyWebpackPostprocessor = wallabyWebpack(webpackConfigTest);
+let babelConfig = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '.babelrc')));
+babelConfig.plugins = [];
+
+
+
 
 module.exports = (wallaby) => {
   return {
@@ -21,7 +26,7 @@ module.exports = (wallaby) => {
     ],
     testFramework: 'mocha',
     compilers: {
-      'app/**/*.js': wallaby.compilers.babel(),
+      'app/**/*.js': wallaby.compilers.babel(babelConfig),
     },
     postprocessor: wallabyWebpackPostprocessor,
     setup: function () {
